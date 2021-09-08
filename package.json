@@ -1,0 +1,13 @@
+{
+  "name": "Node_Master_Class",
+  "version": "0.0.1",
+  "description": "This is a course on developing a node.js application without any third party library.",
+  "main": "index.js",
+  "repository": "https://github.com/ScribbleTons/node_master_class",
+  "author": "ScribbleTons",
+  "license": "MIT",
+  "private": false,
+  "scripts": {
+    "dev": "node index.js"
+  }
+}
