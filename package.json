@@ -8,6 +8,7 @@
   "license": "MIT",
   "private": false,
   "scripts": {
-    "dev": "node index.js"
+    "dev": "node index.js",
+    "prod": "NODE_ENV=staging node index.js"
   }
 }
