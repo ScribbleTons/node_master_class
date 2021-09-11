@@ -5,12 +5,43 @@
 
 //Dependencies
 const http = require("http");
+const https = require("https");
 const url = require("url");
 const StringDecoder = require("string_decoder").StringDecoder;
 const config = require("./config");
+const fs = require("fs");
 
-//The server should respond to all request with a string
-const server = http.createServer(function (req, res) {
+//Instantiating the HTTP server
+const httpServer = http.createServer(function (req, res) {
+  unifiedServer(req, res);
+});
+
+//start the HTTP server
+httpServer.listen(config.httpPort, function () {
+  console.log(
+    `listening on port ${config.httpPort} in mode: ${config.envName}`
+  );
+});
+
+//Instantiating the HTTPS server
+const httpsServerOption = {
+  key: fs.readFileSync("./https/private.pem"),
+  cert: fs.readFileSync("./https/certificate.pem"),
+};
+
+const httpsServer = https.createServer(httpsServerOption, function (req, res) {
+  unifiedServer(req, res);
+});
+
+//start the HTTPS server
+httpsServer.listen(config.httpsPort, function () {
+  console.log(
+    `listening on port ${config.httpsPort} in mode: ${config.envName}`
+  );
+});
+
+// Define a unified server for both http and https server
+const unifiedServer = function (req, res) {
   //GET and parse url
   const parsedUrl = url.parse(req.url, true);
 
@@ -76,21 +107,16 @@ const server = http.createServer(function (req, res) {
       console.groupEnd();
     });
   });
-});
-
-//start the server and have it listen to a port
-server.listen(config.port, function () {
-  console.log(`listening on port ${config.port} in mode: ${config.envName}`);
-});
+};
 
 //define the handlers
 
 const handlers = {};
 
 //Sample route handler
-handlers.sample = function (data, callback) {
+handlers.ping = function (data, callback) {
   //Callback a HTTP status code and a payload object
-  callback(406, { name: "sample" });
+  callback(200);
 };
 
 //404 handler
@@ -100,5 +126,5 @@ handlers.notFound = function (data, callback) {
 
 //Request router
 const router = {
-  sample: handlers.sample,
+  ping: handlers.ping,
 };

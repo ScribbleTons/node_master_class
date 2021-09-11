@@ -10,5 +10,8 @@
   "scripts": {
     "dev": "node index.js",
     "prod": "NODE_ENV=staging node index.js"
+  },
+  "dependencies": {
+    "openssl": "https://github.com/openssl/openssl.git"
   }
 }
